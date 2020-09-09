@@ -3,8 +3,11 @@
     <div class="row">
       <div class="col-md-6 offset-md-3 py-5">
         <h1>Count: {{ this.count }}</h1>
-          <button v-on:click="increment" class="btn btn-primary mr-1">increment</button>
-          <button v-on:click="getCount" class="btn btn-light mr-1">sync</button>
+        <div v-if="error" class="alert alert-danger" role="alert">
+          <strong>{{ error }}</strong> 
+        </div>
+        <button v-on:click="increment" class="btn btn-primary mr-1">increment</button>
+        <button v-on:click="getCount" class="btn btn-light mr-1">sync</button>
       </div>
     </div>
   </div>
@@ -17,6 +20,7 @@ export default {
   name: 'App',
 
   data() { return {
+    error: null,
     count: 0,
   } },
 
@@ -25,9 +29,10 @@ export default {
       axios.get("http://" + config.API_ENDPOINT + "/api/count")
         .then((response) => {
           this.count = response.data.count;
+          this.error = null
         })
         .catch((error) => {
-          window.alert(`The API returned an error: ${error}`);
+          this.error = error
         })
     },
 
@@ -36,9 +41,10 @@ export default {
       axios.post("http://" + config.API_ENDPOINT + "/api/count")
         .then((response) => {
           this.count = response.data.count;
+          this.error = null
         })
         .catch((error) => {
-          window.alert(`The API returned an error: ${error}`);
+          this.error = error
         })
     }
   },
@@ -46,6 +52,11 @@ export default {
   mounted() {
     this.getCount()
     console.log("API_ENDPOINT: " + config.API_ENDPOINT)
+
+    window.setInterval(() => {
+      this.getCount()
+    }, 5000)
+
   }
 }
 </script>
