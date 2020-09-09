@@ -1,8 +1,20 @@
 # 3-tier-counter
 
-Written in Go and Vue.
+Created with Postgres, GoLang and VueJS.
 
-## Backend
+## Quickstart
+```
+docker-compose up
+```
+
+## Development
+
+### Database
+```
+docker-compose up db
+```
+
+### Backend
 
 Navigate to the `backend` directory and run:
 
@@ -10,7 +22,7 @@ Navigate to the `backend` directory and run:
 go run main.go
 ```
 
-## Frontend
+### Frontend
 
 Navigate to the `frontend` directory and run the following command to install required packages:
 ```bash
