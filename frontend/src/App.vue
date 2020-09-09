@@ -44,7 +44,7 @@ export default {
 
   mounted() {
     this.getCount()
-    console.log("config: " + config.VUE_APP_ENV_MyURL)
+    console.log("API_ENDPOINT: " + config.API_ENDPOINT)
   }
 }
 </script>

@@ -5,3 +5,10 @@ services:
         image: 3-tier-counter-backend:latest
         ports:
             - "3000:3000"
+    frontend:
+        build: ./frontend/
+        image: 3-tier-counter-frontend:latest
+        ports:
+            - "80:80"
+        environment: 
+            - "API_ENDPOINT=localhost:3000"
