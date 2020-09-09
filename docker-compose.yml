@@ -1,10 +1,22 @@
 version: '3'
-services: 
+services:
+    db:
+        image: postgres:12.4-alpine
+        ports:
+            - "5432:5432"
+        environment:
+            - "POSTGRES_PASSWORD=password"
+
     backend:
         build: ./backend/
         image: 3-tier-counter-backend:latest
         ports:
             - "3000:3000"
+        environment: 
+            - "DB_HOST=db"
+        depends_on:
+            - db
+ 
     frontend:
         build: ./frontend/
         image: 3-tier-counter-frontend:latest

@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-md-6 offset-md-3 py-5">
         <h1>Count: {{ this.count }}</h1>
-          <button v-on:click="increment" class="btn btn-primary">increment</button>
-          <button v-on:click="getCount" class="btn btn-light">sync</button>
+          <button v-on:click="increment" class="btn btn-primary mr-1">increment</button>
+          <button v-on:click="getCount" class="btn btn-light mr-1">sync</button>
       </div>
     </div>
   </div>
@@ -32,6 +32,7 @@ export default {
     },
 
     increment() {
+      this.count += 1;
       axios.post("http://" + config.API_ENDPOINT + "/api/count")
         .then((response) => {
           this.count = response.data.count;
