@@ -1,0 +1,7 @@
+version: '3'
+services: 
+    backend:
+        build: ./backend/
+        image: 3-tier-counter-backend:latest
+        ports:
+            - "3000:3000"

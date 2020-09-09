@@ -33,7 +33,10 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {},
+    "globals": {
+      "config": "readonly"
+    }
   },
   "browserslist": [
     "> 1%",

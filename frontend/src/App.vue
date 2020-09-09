@@ -22,7 +22,7 @@ export default {
 
   methods: {
     getCount() {
-      axios.get("http://localhost:3000/api/count")
+      axios.get("http://" + config.API_ENDPOINT + "/api/count")
         .then((response) => {
           this.count = response.data.count;
         })
@@ -32,7 +32,7 @@ export default {
     },
 
     increment() {
-      axios.post("http://localhost:3000/api/count")
+      axios.post("http://" + config.API_ENDPOINT + "/api/count")
         .then((response) => {
           this.count = response.data.count;
         })
@@ -44,7 +44,7 @@ export default {
 
   mounted() {
     this.getCount()
+    console.log("config: " + config.VUE_APP_ENV_MyURL)
   }
-
 }
 </script>
