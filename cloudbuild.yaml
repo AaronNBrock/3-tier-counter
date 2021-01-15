@@ -1,0 +1,3 @@
+steps:
+- name: 'flemay/musketeers'
+  args: ['make', 'push']

@@ -70,6 +70,7 @@ func main() {
 
 	s := server{db: db}
 
+	fmt.Println("Connecting to db...")
 	err = retry.Do(
 		func() error {
 			_, err = s.db.Exec(`CREATE TABLE IF NOT EXISTS counters (
@@ -86,6 +87,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	fmt.Println("Connected.")
 	http.HandleFunc("/api/count", s.countHandler)
 	fmt.Println("Server listening on port 3000")
 	log.Panic(
