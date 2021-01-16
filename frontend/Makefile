@@ -13,7 +13,10 @@ stop:
 	docker stop $(NAME)
 	@-docker network rm 3-tier-counter
 
-build:
+pull:
+	-docker pull $(TAG)
+
+build: pull
 	docker build --cache-from $(TAG) -t $(TAG) .
 
 push: build
