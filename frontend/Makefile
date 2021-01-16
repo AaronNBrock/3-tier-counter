@@ -1,7 +1,7 @@
-
 TAG  ?= gcr.io/sada-aaron-brock/3-tier-counter-frontend:latest
 NAME := 3-tier-counter-frontend
 
+export DOCKER_BUILDKIT = 1
 start:
 	-@docker network create 3-tier-counter
 	docker run --rm -d -p 80:80 -e API_ENDPOINT=3-tier-counter-backend:3000 --network 3-tier-counter --name $(NAME) $(TAG)
@@ -17,7 +17,11 @@ pull:
 	-docker pull $(TAG)
 
 build: pull
-	docker build --cache-from $(TAG) -t $(TAG) .
+	docker build \
+		-t $(TAG) \
+		--cache-from $(TAG) \
+		--build-arg BUILDKIT_INLINE_CACHE=1 \
+		.
 
 push: build
 	docker push $(TAG)
