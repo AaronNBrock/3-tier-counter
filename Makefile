@@ -1,14 +1,14 @@
-MAKEFLAGS += -s -k
+MAKEFLAGS += -k
 
 %: database-% backend-% frontend-%
 	@
 
 database-%:
-	@$(MAKE) -s -C database $*
+	@$(MAKE) -C database $*
 
 backend-%:
-	@$(MAKE) -s -C backend $*
+	@$(MAKE) -C backend $*
 
 frontend-%:
-	@$(MAKE) -s -C frontend $*
+	@$(MAKE) -C frontend $*
 
