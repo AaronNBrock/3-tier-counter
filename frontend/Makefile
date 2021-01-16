@@ -1,5 +1,5 @@
 
-TAG  ?= gcr.io/sada-aaron-brock/3-tier-counter-frontend
+TAG  ?= gcr.io/sada-aaron-brock/3-tier-counter-frontend:latest
 NAME := 3-tier-counter-frontend
 
 start:

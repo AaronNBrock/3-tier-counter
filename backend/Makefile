@@ -1,5 +1,5 @@
 
-TAG  ?= gcr.io/sada-aaron-brock/3-tier-counter-backend
+TAG  ?= gcr.io/sada-aaron-brock/3-tier-counter-backend:latest
 NAME := 3-tier-counter-backend
 
 start:
@@ -16,7 +16,7 @@ stop:
 pull:
 	-docker pull $(TAG)
 
-build:
+build: pull
 	docker build --cache-from $(TAG) -t $(TAG) .
 
 push: build
