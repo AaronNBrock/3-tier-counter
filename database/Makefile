@@ -15,4 +15,5 @@ stop:
 # To avoid errors
 build:
 push:
+	docker version
 fmt:
