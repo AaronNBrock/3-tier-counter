@@ -14,7 +14,7 @@ stop:
 	@-docker network rm 3-tier-counter
 
 build:
-	docker build -t $(TAG) .
+	docker build --cache-from $(TAG) -t $(TAG) .
 
 push: build
 	docker push $(TAG)
