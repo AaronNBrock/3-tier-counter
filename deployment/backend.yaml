@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: three-tier-counter-backend
+  annotations:
+    iam.gke.io/gcp-service-account: three-tier-counter-backend@sada-aaron-brock.iam.gserviceaccount.com
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: three-tier-counter
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: three-tier-counter
+        tier: backend
+    spec:
+      serviceAccountName: three-tier-counter-backend
+      containers:
+      - name: backend
+        image: gcr.io/sada-aaron-brock/3-tier-counter-backend:latest
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: three-tier-counter-database-credentials
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: three-tier-counter-database-credentials
+              key: password
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: three-tier-counter-database-credentials
+              key: database
+        - name: DB_HOST
+          value: "127.0.0.1"
+        - name: DB_PORT
+          value: "5432"
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+      - name: cloud-sql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.21.0
+        command:
+          - "/cloud_sql_proxy"
+          - "-instances=sada-aaron-brock:us-central1:three-tier-counter-database=tcp:5432"
+        securityContext:
+          runAsNonRoot: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  annotations:
+    cloud.google.com/backend-config: '{"default": "backend"}'
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+  selector:
+    app: three-tier-counter
+    tier: backend
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: backend
+spec:
+  backend:
+    serviceName: backend
+    servicePort: 3000
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: backend
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3000
+    type: HTTP
+    requestPath: /api/count
+

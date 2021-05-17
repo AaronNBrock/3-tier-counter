@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: 3-tier-counter
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: 3-tier-counter
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: gcr.io/sada-aaron-brock/3-tier-counter-frontend:latest
+        env:
+        - name: API_ENDPOINT
+          value: backend:3000
+        ports:
+        - containerPort: 80
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: 3-tier-counter
+    tier: frontend
+  type: NodePort
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: frontend
+spec:
+  backend:
+    serviceName: frontend
+    servicePort: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  targetCPUUtilizationPercentage: 50
