@@ -9,4 +9,5 @@ FROM nginx:1.19-alpine
 WORKDIR /app
 COPY --from=builder /app/dist /app
 COPY ./nginx/create-config-js.sh /docker-entrypoint.d/
+RUN chmod +x /docker-entrypoint.d/create-config-js.sh
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
