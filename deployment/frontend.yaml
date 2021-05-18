@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: frontend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: 3-tier-counter
@@ -19,7 +19,7 @@ spec:
         image: gcr.io/sada-aaron-brock/3-tier-counter-frontend:latest
         env:
         - name: API_ENDPOINT
-          value: backend:3000
+          value: 34.120.103.135:80
         ports:
         - containerPort: 80
           protocol: TCP
@@ -46,16 +46,16 @@ spec:
   backend:
     serviceName: frontend
     servicePort: 80
----
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: frontend
-spec:
-  maxReplicas: 10
-  minReplicas: 1
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: frontend
-  targetCPUUtilizationPercentage: 50
+# ---
+# apiVersion: autoscaling/v1
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: frontend
+# spec:
+#   maxReplicas: 10
+#   minReplicas: 1
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: frontend
+#   targetCPUUtilizationPercentage: 50
