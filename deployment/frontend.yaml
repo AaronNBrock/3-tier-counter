@@ -20,9 +20,28 @@ spec:
         env:
         - name: API_ENDPOINT
           value: 34.120.103.135:80
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: main
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: main
+
         ports:
-        - containerPort: 80
+        - name: main
+          containerPort: 80
           protocol: TCP
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "50m"
+          limits:
+            memory: "32Mi"
+            cpu: "100m"
 ---
 apiVersion: v1
 kind: Service
@@ -38,14 +57,16 @@ spec:
     tier: frontend
   type: NodePort
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: frontend
 spec:
-  backend:
-    serviceName: frontend
-    servicePort: 80
+  defaultBackend:
+    service:
+      name: frontend
+      port: 
+        number: 80
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
