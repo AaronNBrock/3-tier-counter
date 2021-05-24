@@ -19,7 +19,7 @@ spec:
         image: gcr.io/sada-aaron-brock/3-tier-counter-frontend:latest
         env:
         - name: API_ENDPOINT
-          value: 34.120.103.135:80
+          value: 34.107.202.160:80
 
         livenessProbe:
           httpGet:
