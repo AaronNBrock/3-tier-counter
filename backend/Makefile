@@ -1,5 +1,4 @@
-# DOCKER_TAG   ?= $(shell git describe --always --dirty --match "v[0-9]*")
-DOCKER_TAG   ?= latest
+DOCKER_TAG   ?= $(shell git describe --always --dirty --match "v[0-9]*")
 PROJECT_NAME ?= 3-tier-counter-backend
 TAG          ?= gcr.io/sada-aaron-brock/$(PROJECT_NAME):$(DOCKER_TAG)
 
