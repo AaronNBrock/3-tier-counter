@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- backend-secrets.yaml
+- backend.yaml
+- frontend.yaml
+
+
+images:
+- name: gcr.io/sada-aaron-brock/3-tier-counter-backend:latest
+  newName: gcr.io/sada-aaron-brock/3-tier-counter-backend
+  newTag: v0.1.0-10-g050e0bf-dirty
+- name: gcr.io/sada-aaron-brock/3-tier-counter-frontend:latest
+  newName: gcr.io/sada-aaron-brock/3-tier-counter-frontend
+  newTag: latest

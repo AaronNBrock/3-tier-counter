@@ -45,14 +45,17 @@ spec:
           value: "127.0.0.1"
         - name: DB_PORT
           value: "5432"
+
         livenessProbe:
           httpGet:
             path: /api/count
             port: main
+
         readinessProbe:
           httpGet:
             path: /api/count
             port: main
+
         ports:
         - name: main
           containerPort: 3000
