@@ -1,29 +1,26 @@
-DOCKER_TAG   ?= $(shell git describe --always --dirty --match "v[0-9]*")
+GIT_HASH ?= $(shell git describe --always --dirty --match "v[0-9]*")
+
 PROJECT_NAME ?= 3-tier-counter-backend
-TAG          ?= gcr.io/sada-aaron-brock/$(PROJECT_NAME):$(DOCKER_TAG)
+HASH_TAG     ?= gcr.io/sada-aaron-brock/$(PROJECT_NAME):$(GIT_HASH)
+NAME_TAG     ?= gcr.io/sada-aaron-brock/$(PROJECT_NAME):latest
 
 export DOCKER_BUILDKIT = 1
 pull:
-	-docker pull $(TAG)
+	-docker pull $(HASH_TAG)
+	-docker pull $(NAME_TAG)
 
 build: pull
 	docker build \
-		-t $(TAG) \
-		--cache-from $(TAG) \
+		-t $(HASH_TAG) \
+		-t $(NAME_TAG) \
+		--cache-from $(HASH_TAG) \
+		--cache-from $(NAME_TAG) \
 	 	--build-arg BUILDKIT_INLINE_CACHE=1 \
 		.
 
 push: build
-	docker push $(TAG)
-
-.PHONY: deploy
-deploy:
-	kubectl apply --force -k deploy/
-
-.PHONY: deploy
-undeploy:
-	kubectl delete -k deploy/
-
+	docker push $(HASH_TAG)
+	docker push $(NAME_TAG)
 
 #
 # Local Development
