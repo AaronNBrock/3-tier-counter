@@ -68,6 +68,6 @@ export default {
 
 <style>
 body {
-  background-color: blanchedalmond;
+  background-color: white;
 }
 </style>
